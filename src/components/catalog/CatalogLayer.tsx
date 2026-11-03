@@ -7,23 +7,26 @@ import { DualPagination } from './DualPagination';
 import { ArrowLeft, X, ShoppingCart, Search, Zap } from 'lucide-react';
 import styles from './CatalogLayer.module.css';
 
+export type TecEnerCategory = 'all' | 'inverter' | 'gasoline' | 'gas' | 'diesel' | 'accessories';
+
 interface CatalogLayerProps {
+  activeCategory: TecEnerCategory;
+  onCategoryChange: (category: TecEnerCategory) => void;
   onClose: () => void;
   onSelectProduct: (product: Product) => void;
   onOpenCart: () => void;
 }
 
-type CategoryType = 'all' | 'inverter' | 'gas' | 'petrol' | 'diesel' | 'accessories';
-
 const ITEMS_PER_PAGE = 12;
 
 export const CatalogLayer: React.FC<CatalogLayerProps> = ({
+  activeCategory,
+  onCategoryChange,
   onClose,
   onSelectProduct,
   onOpenCart,
 }) => {
   const [products, setProducts] = useState<Product[]>(FALLBACK_PRODUCTS);
-  const [activeCategory, setActiveCategory] = useState<CategoryType>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [onlyInStock, setOnlyInStock] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -72,13 +75,13 @@ export const CatalogLayer: React.FC<CatalogLayerProps> = ({
     };
   }, [onClose]);
 
-  // Filtering
+  // Filtering based on exact title rules
   const filteredProducts = useMemo(() => {
     return products.filter((p) => {
       // Stock filter
       if (onlyInStock && p.stock <= 0) return false;
 
-      // Search filter
+      // Search query filter
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase().trim();
         const matchTitle = p.title.toLowerCase().includes(query);
@@ -86,31 +89,30 @@ export const CatalogLayer: React.FC<CatalogLayerProps> = ({
         if (!matchTitle && !matchSku) return false;
       }
 
-      // Category tab filter
+      // Accurate Category filter rules
       const t = p.title.toLowerCase();
       if (activeCategory === 'inverter') {
-        return t.includes('инвертор');
+        return t.includes('инверторн');
+      }
+      if (activeCategory === 'gasoline') {
+        return t.includes('бензин');
       }
       if (activeCategory === 'gas') {
-        return t.includes('газов');
-      }
-      if (activeCategory === 'petrol') {
-        return t.includes('бензин') && !t.includes('инвертор');
+        return t.includes('газ');
       }
       if (activeCategory === 'diesel') {
-        return t.includes('дизель');
+        return t.includes('дизельн');
       }
       if (activeCategory === 'accessories') {
         return (
-          t.includes('авр') ||
-          t.includes('кабель') ||
           t.includes('блок') ||
-          t.includes('комплект') ||
-          t.includes('колес')
+          t.includes('кабель') ||
+          t.includes('колёса') ||
+          t.includes('колеса')
         );
       }
 
-      return true;
+      return true; // 'all'
     });
   }, [products, onlyInStock, searchQuery, activeCategory]);
 
@@ -120,15 +122,10 @@ export const CatalogLayer: React.FC<CatalogLayerProps> = ({
     setVisibleCount(ITEMS_PER_PAGE);
   }, [activeCategory, searchQuery, onlyInStock]);
 
-  // Calculate items to show:
-  // If user used "Load more", we show up to `visibleCount`.
-  // If user navigated to a specific page, we show that specific slice.
   const displayedProducts = useMemo(() => {
-    // If on page 1, slice up to visibleCount (supports Load More)
     if (currentPage === 1) {
       return filteredProducts.slice(0, visibleCount);
     }
-    // If on page > 1, slice that specific page
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     return filteredProducts.slice(start, start + ITEMS_PER_PAGE);
   }, [filteredProducts, currentPage, visibleCount]);
@@ -150,34 +147,42 @@ export const CatalogLayer: React.FC<CatalogLayerProps> = ({
 
   const formattedTotalSum = new Intl.NumberFormat('ru-RU').format(totalSum);
 
-  // Tab counts
+  // Accurate category counts
   const categoryCounts = useMemo(() => {
     const counts = {
       all: products.length,
       inverter: 0,
+      gasoline: 0,
       gas: 0,
-      petrol: 0,
       diesel: 0,
       accessories: 0,
     };
     products.forEach((p) => {
       const t = p.title.toLowerCase();
-      if (t.includes('инвертор')) counts.inverter++;
-      else if (t.includes('газов')) counts.gas++;
-      else if (t.includes('бензин')) counts.petrol++;
-      else if (t.includes('дизель')) counts.diesel++;
+      if (t.includes('инверторн')) counts.inverter++;
+      if (t.includes('бензин')) counts.gasoline++;
+      if (t.includes('газ')) counts.gas++;
+      if (t.includes('дизельн')) counts.diesel++;
       if (
-        t.includes('авр') ||
-        t.includes('кабель') ||
         t.includes('блок') ||
-        t.includes('комплект') ||
-        t.includes('колес')
+        t.includes('кабель') ||
+        t.includes('колёса') ||
+        t.includes('колеса')
       ) {
         counts.accessories++;
       }
     });
     return counts;
   }, [products]);
+
+  const categoriesList: { id: TecEnerCategory; label: string; count: number }[] = [
+    { id: 'all', label: 'Все товары', count: categoryCounts.all },
+    { id: 'inverter', label: 'Инверторные', count: categoryCounts.inverter },
+    { id: 'gasoline', label: 'Бензиновые', count: categoryCounts.gasoline },
+    { id: 'gas', label: 'Газовые / Газ-бензин', count: categoryCounts.gas },
+    { id: 'diesel', label: 'Дизельные', count: categoryCounts.diesel },
+    { id: 'accessories', label: 'АВР и комплектующие', count: categoryCounts.accessories },
+  ];
 
   return (
     <div className={styles.layer} role="dialog" aria-modal="true" aria-label="Каталог TecEner">
@@ -261,62 +266,21 @@ export const CatalogLayer: React.FC<CatalogLayerProps> = ({
             </label>
           </div>
 
-          {/* Category Tabs */}
-          <div className={styles.categoryTabs} role="tablist">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeCategory === 'all'}
-              className={`${styles.categoryTab} ${activeCategory === 'all' ? styles.activeTab : ''}`}
-              onClick={() => setActiveCategory('all')}
-            >
-              Все модели <span className={styles.tabCount}>({categoryCounts.all})</span>
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeCategory === 'inverter'}
-              className={`${styles.categoryTab} ${activeCategory === 'inverter' ? styles.activeTab : ''}`}
-              onClick={() => setActiveCategory('inverter')}
-            >
-              Инверторные <span className={styles.tabCount}>({categoryCounts.inverter})</span>
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeCategory === 'gas'}
-              className={`${styles.categoryTab} ${activeCategory === 'gas' ? styles.activeTab : ''}`}
-              onClick={() => setActiveCategory('gas')}
-            >
-              Газовые <span className={styles.tabCount}>({categoryCounts.gas})</span>
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeCategory === 'petrol'}
-              className={`${styles.categoryTab} ${activeCategory === 'petrol' ? styles.activeTab : ''}`}
-              onClick={() => setActiveCategory('petrol')}
-            >
-              Бензиновые <span className={styles.tabCount}>({categoryCounts.petrol})</span>
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeCategory === 'diesel'}
-              className={`${styles.categoryTab} ${activeCategory === 'diesel' ? styles.activeTab : ''}`}
-              onClick={() => setActiveCategory('diesel')}
-            >
-              Дизельные <span className={styles.tabCount}>({categoryCounts.diesel})</span>
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeCategory === 'accessories'}
-              className={`${styles.categoryTab} ${activeCategory === 'accessories' ? styles.activeTab : ''}`}
-              onClick={() => setActiveCategory('accessories')}
-            >
-              АВР и аксессуары <span className={styles.tabCount}>({categoryCounts.accessories})</span>
-            </button>
+          {/* Category Tabs inside Filter Panel */}
+          <div className={styles.categoryTabs} role="tablist" aria-label="Фильтр по категориям">
+            {categoriesList.map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                role="tab"
+                aria-selected={activeCategory === cat.id}
+                className={`${styles.categoryTab} ${activeCategory === cat.id ? styles.activeTab : ''}`}
+                onClick={() => onCategoryChange(cat.id)}
+              >
+                <span>{cat.label}</span>
+                <span className={styles.tabCount}>({cat.count})</span>
+              </button>
+            ))}
           </div>
         </section>
 
@@ -334,20 +298,20 @@ export const CatalogLayer: React.FC<CatalogLayerProps> = ({
         ) : (
           <div className={styles.emptyResults}>
             <Zap size={36} color="#94a3b8" style={{ margin: '0 auto 12px' }} />
-            <h3 className={styles.emptyResultsTitle}>По вашему запросу ничего не найдено</h3>
+            <h3 className={styles.emptyResultsTitle}>В данной категории ничего не найдено</h3>
             <p style={{ fontSize: '13px' }}>
-              Попробуйте изменить поисковую фразу или сбросить активные фильтры.
+              Попробуйте изменить поисковую фразу или выбрать другую категорию генераторов.
             </p>
             <button
               type="button"
               className={styles.resetBtn}
               onClick={() => {
                 setSearchQuery('');
-                setActiveCategory('all');
+                onCategoryChange('all');
                 setOnlyInStock(false);
               }}
             >
-              Сбросить фильтры
+              Показать все товары TecEner
             </button>
           </div>
         )}

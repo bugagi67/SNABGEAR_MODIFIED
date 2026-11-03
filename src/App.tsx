@@ -13,7 +13,7 @@ import { AdvantagesSection } from './components/AdvantagesSection';
 import { LeadFormSection } from './components/LeadFormSection';
 import { Footer } from './components/Footer';
 import { TecEnerPromoSection } from './components/TecEnerPromoSection';
-import { CatalogLayer } from './components/catalog/CatalogLayer';
+import { CatalogLayer, TecEnerCategory } from './components/catalog/CatalogLayer';
 import { ProductDetailLayer } from './components/catalog/ProductDetailLayer';
 import { CartDrawer } from './components/catalog/CartDrawer';
 import { CartProvider, useCart } from './context/CartContext';
@@ -21,34 +21,49 @@ import { FALLBACK_PRODUCTS } from './data/fallbackProducts';
 import { Product } from './types/product';
 import { FileUp, ShoppingBag } from 'lucide-react';
 
+const VALID_CATEGORIES: TecEnerCategory[] = [
+  'all',
+  'inverter',
+  'gasoline',
+  'gas',
+  'diesel',
+  'accessories',
+];
+
 function AppContent() {
   const [selectedCategoryForForm, setSelectedCategoryForForm] = useState<string>('');
   const [isCatalogOpen, setIsCatalogOpen] = useState<boolean>(false);
+  const [activeCategory, setActiveCategory] = useState<TecEnerCategory>('all');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const { isCartOpen, setIsCartOpen, totalCount } = useCart();
 
-  // Parse URL query parameters to synchronize overlay layers
+  // Parse URL query parameters to synchronize overlay layers & category filter
   const syncFromUrl = useCallback(() => {
     const params = new URLSearchParams(window.location.search);
     const catalogParam = params.get('catalog');
+    const categoryParam = params.get('category');
     const productParam = params.get('product');
 
     if (catalogParam === 'tecener') {
       setIsCatalogOpen(true);
+
+      if (categoryParam && VALID_CATEGORIES.includes(categoryParam as TecEnerCategory)) {
+        setActiveCategory(categoryParam as TecEnerCategory);
+      } else {
+        setActiveCategory('all');
+      }
+
       if (productParam) {
         const found = FALLBACK_PRODUCTS.find((p) => p.sku === productParam);
-        if (found) {
-          setSelectedProduct(found);
-        } else {
-          setSelectedProduct(null);
-        }
+        setSelectedProduct(found || null);
       } else {
         setSelectedProduct(null);
       }
     } else {
       setIsCatalogOpen(false);
       setSelectedProduct(null);
+      setActiveCategory('all');
     }
   }, []);
 
@@ -61,31 +76,61 @@ function AppContent() {
     };
   }, [syncFromUrl]);
 
-  // Open Catalog Layer and update URL
-  const handleOpenCatalog = () => {
-    const newUrl = `${window.location.pathname}?catalog=tecener`;
+  // Open Catalog Layer with optional category filter and update URL
+  const handleOpenCatalog = (category?: string) => {
+    const cat: TecEnerCategory =
+      category && VALID_CATEGORIES.includes(category as TecEnerCategory)
+        ? (category as TecEnerCategory)
+        : 'all';
+
+    const newUrl =
+      cat !== 'all'
+        ? `${window.location.pathname}?catalog=tecener&category=${cat}`
+        : `${window.location.pathname}?catalog=tecener`;
+
     window.history.pushState(null, '', newUrl);
+    setActiveCategory(cat);
     setIsCatalogOpen(true);
     setSelectedProduct(null);
   };
 
-  // Close Catalog Layer and update URL
+  // Switch category filter inside the catalog and update URL
+  const handleCategoryChange = (cat: TecEnerCategory) => {
+    setActiveCategory(cat);
+    const newUrl =
+      cat !== 'all'
+        ? `${window.location.pathname}?catalog=tecener&category=${cat}`
+        : `${window.location.pathname}?catalog=tecener`;
+
+    window.history.pushState(null, '', newUrl);
+  };
+
+  // Close Catalog Layer and reset URL
   const handleCloseCatalog = () => {
     window.history.pushState(null, '', window.location.pathname);
     setIsCatalogOpen(false);
     setSelectedProduct(null);
+    setActiveCategory('all');
   };
 
-  // Select Product Detail and update URL
+  // Select Product Detail and update URL preserving active category
   const handleSelectProduct = (product: Product) => {
-    const newUrl = `${window.location.pathname}?catalog=tecener&product=${encodeURIComponent(product.sku)}`;
+    const newUrl =
+      activeCategory !== 'all'
+        ? `${window.location.pathname}?catalog=tecener&category=${activeCategory}&product=${encodeURIComponent(product.sku)}`
+        : `${window.location.pathname}?catalog=tecener&product=${encodeURIComponent(product.sku)}`;
+
     window.history.pushState(null, '', newUrl);
     setSelectedProduct(product);
   };
 
-  // Back from Product Detail to Catalog
+  // Back from Product Detail to Catalog preserving active category
   const handleBackToCatalog = () => {
-    const newUrl = `${window.location.pathname}?catalog=tecener`;
+    const newUrl =
+      activeCategory !== 'all'
+        ? `${window.location.pathname}?catalog=tecener&category=${activeCategory}`
+        : `${window.location.pathname}?catalog=tecener`;
+
     window.history.pushState(null, '', newUrl);
     setSelectedProduct(null);
   };
@@ -125,7 +170,7 @@ function AppContent() {
           onScrollToForm={scrollToForm}
         />
 
-        {/* 4.1. Генераторы и силовое оборудование TecEner (SEO-rich Promo & Entry Point) */}
+        {/* 4.1. Генераторы и силовое оборудование TecEner (SEO-rich Promo & Interactive Entry Point) */}
         <TecEnerPromoSection onOpenCatalog={handleOpenCatalog} />
 
         {/* 5. Преимущества B2B (4 колонки) */}
@@ -166,9 +211,11 @@ function AppContent() {
         </button>
       )}
 
-      {/* Layer 1: TecEner Full Catalog Overlay */}
+      {/* Layer 1: TecEner Full Catalog Overlay with pre-selected category */}
       {isCatalogOpen && (
         <CatalogLayer
+          activeCategory={activeCategory}
+          onCategoryChange={handleCategoryChange}
           onClose={handleCloseCatalog}
           onSelectProduct={handleSelectProduct}
           onOpenCart={() => setIsCartOpen(true)}
@@ -192,7 +239,7 @@ function AppContent() {
           onContinueShopping={() => {
             setIsCartOpen(false);
             if (!isCatalogOpen) {
-              handleOpenCatalog();
+              handleOpenCatalog(activeCategory);
             }
           }}
         />

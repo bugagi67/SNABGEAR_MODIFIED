@@ -4,7 +4,7 @@ import { Zap, ShieldCheck, Flame, Cpu, Settings, ArrowRight, Gauge, CheckCircle 
 import styles from './TecEnerPromoSection.module.css';
 
 interface TecEnerPromoSectionProps {
-  onOpenCatalog: () => void;
+  onOpenCatalog: (category?: string) => void;
 }
 
 export const TecEnerPromoSection: React.FC<TecEnerPromoSectionProps> = ({ onOpenCatalog }) => {
@@ -111,93 +111,165 @@ export const TecEnerPromoSection: React.FC<TecEnerPromoSectionProps> = ({ onOpen
           </div>
         </article>
 
-        {/* 4 Category Highlights */}
+        {/* 5 Interactive Category Cards with URL filtering */}
         <div className={styles.categoriesGrid}>
+          {/* 1. Инверторные */}
           <article
             className={styles.categoryCard}
-            onClick={onOpenCatalog}
+            onClick={() => onOpenCatalog('inverter')}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') onOpenCatalog();
+              if (e.key === 'Enter') onOpenCatalog('inverter');
             }}
+            aria-label="Открыть инверторные генераторы TecEner"
           >
             <div className={styles.catIconBox}>
               <Cpu size={22} />
             </div>
             <h3 className={styles.catTitle}>Инверторные генераторы</h3>
             <p className={styles.catText}>
-              Идеальная синусоида для точной электроники, серверов и измерительных приборов. Сверхнизкий уровень шума и вес от 12 кг.
+              Идеальная синусоида для точной электроники, серверов и приборов. Сверхнизкий уровень шума, компактный вес.
             </p>
-            <span className={styles.catLink}>
-              Смотреть модели <ArrowRight size={14} />
-            </span>
+            <a
+              href="?catalog=tecener&category=inverter"
+              className={styles.catLink}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onOpenCatalog('inverter');
+              }}
+            >
+              Смотреть модели (15) <ArrowRight size={14} />
+            </a>
           </article>
 
+          {/* 2. Бензиновые */}
           <article
             className={styles.categoryCard}
-            onClick={onOpenCatalog}
+            onClick={() => onOpenCatalog('gasoline')}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') onOpenCatalog();
+              if (e.key === 'Enter') onOpenCatalog('gasoline');
             }}
-          >
-            <div className={styles.catIconBox}>
-              <Flame size={22} />
-            </div>
-            <h3 className={styles.catTitle}>Газовые электростанции</h3>
-            <p className={styles.catText}>
-              Работа на сжиженном (LPG) и магистральном природном газе (NG). Минимальная стоимость вырабатываемого киловатт-часа.
-            </p>
-            <span className={styles.catLink}>
-              Смотреть модели <ArrowRight size={14} />
-            </span>
-          </article>
-
-          <article
-            className={styles.categoryCard}
-            onClick={onOpenCatalog}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') onOpenCatalog();
-            }}
+            aria-label="Открыть бензиновые генераторы TecEner"
           >
             <div className={styles.catIconBox}>
               <Gauge size={22} />
             </div>
-            <h3 className={styles.catTitle}>Бензиновые и дизельные</h3>
+            <h3 className={styles.catTitle}>Бензиновые генераторы</h3>
             <p className={styles.catText}>
-              Выносливые рамные генераторы для стройплощадок, ремонтных бригад и производственных цехов с медной обмоткой альтернатора.
+              Выносливые рамные электростанции для стройплощадок, ремонтных бригад и производственных цехов.
             </p>
-            <span className={styles.catLink}>
-              Смотреть модели <ArrowRight size={14} />
-            </span>
+            <a
+              href="?catalog=tecener&category=gasoline"
+              className={styles.catLink}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onOpenCatalog('gasoline');
+              }}
+            >
+              Смотреть модели (35) <ArrowRight size={14} />
+            </a>
           </article>
 
+          {/* 3. Газовые */}
           <article
             className={styles.categoryCard}
-            onClick={onOpenCatalog}
+            onClick={() => onOpenCatalog('gas')}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') onOpenCatalog();
+              if (e.key === 'Enter') onOpenCatalog('gas');
             }}
+            aria-label="Открыть газовые генераторы TecEner"
+          >
+            <div className={styles.catIconBox}>
+              <Flame size={22} />
+            </div>
+            <h3 className={styles.catTitle}>Газовые / Газ-бензин</h3>
+            <p className={styles.catText}>
+              Работа на сжиженном (LPG) и магистральном природном газе (NG). Минимальная стоимость вырабатываемого кВт⋅ч.
+            </p>
+            <a
+              href="?catalog=tecener&category=gas"
+              className={styles.catLink}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onOpenCatalog('gas');
+              }}
+            >
+              Смотреть модели (10) <ArrowRight size={14} />
+            </a>
+          </article>
+
+          {/* 4. Дизельные */}
+          <article
+            className={styles.categoryCard}
+            onClick={() => onOpenCatalog('diesel')}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') onOpenCatalog('diesel');
+            }}
+            aria-label="Открыть дизельные генераторы TecEner"
+          >
+            <div className={styles.catIconBox}>
+              <Zap size={22} />
+            </div>
+            <h3 className={styles.catTitle}>Дизельные генераторы</h3>
+            <p className={styles.catText}>
+              Тяжелые силовые установки 230/400 В высокой надежности для резервного и основного электроснабжения.
+            </p>
+            <a
+              href="?catalog=tecener&category=diesel"
+              className={styles.catLink}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onOpenCatalog('diesel');
+              }}
+            >
+              Смотреть модели (3) <ArrowRight size={14} />
+            </a>
+          </article>
+
+          {/* 5. АВР и комплектующие */}
+          <article
+            className={styles.categoryCard}
+            onClick={() => onOpenCatalog('accessories')}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') onOpenCatalog('accessories');
+            }}
+            aria-label="Открыть АВР и комплектующие TecEner"
           >
             <div className={styles.catIconBox}>
               <Settings size={22} />
             </div>
-            <h3 className={styles.catTitle}>Блоки автоматики АВР</h3>
+            <h3 className={styles.catTitle}>АВР и комплектующие</h3>
             <p className={styles.catText}>
-              Блоки автоматического ввода резерва ATS TecEner, кабели синхронизации, транспортировочные комплекты и расходные материалы.
+              Блоки автоматики ATS TecEner, кабели синхронизации, транспортировочные колеса и рукоятки.
             </p>
-            <span className={styles.catLink}>
-              Смотреть модели <ArrowRight size={14} />
-            </span>
+            <a
+              href="?catalog=tecener&category=accessories"
+              className={styles.catLink}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onOpenCatalog('accessories');
+              }}
+            >
+              Смотреть позиции (7) <ArrowRight size={14} />
+            </a>
           </article>
         </div>
       </div>
     </section>
   );
 };
+

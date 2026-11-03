@@ -8,7 +8,7 @@ import styles from './ProductDetailLayer.module.css';
 interface ProductDetailLayerProps {
   product: Product;
   onBackToCatalog: () => void;
-  onCloseAll: () => void;
+  onCloseAll?: () => void;
   onOpenCart: () => void;
 }
 
@@ -92,8 +92,8 @@ export const ProductDetailLayer: React.FC<ProductDetailLayerProps> = ({
           <button
             type="button"
             className={styles.closeBtn}
-            onClick={onCloseAll}
-            aria-label="Закрыть"
+            onClick={onBackToCatalog}
+            aria-label="Назад в каталог"
           >
             <X size={18} />
           </button>
