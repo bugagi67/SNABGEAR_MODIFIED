@@ -1,0 +1,6 @@
+{
+  "name": "SNABGEAR — Промышленное B2B Снабжение",
+  "description": "Поставка инструмента, оборудования и крепежа в Смоленске и Смоленской области. Комплексное снабжение предприятий.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

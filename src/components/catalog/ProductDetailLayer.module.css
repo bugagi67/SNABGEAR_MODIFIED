@@ -1,0 +1,360 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  overflow-y: auto;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 900px;
+  max-height: 92vh;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  animation: slideUp 0.25s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  transition: all 0.15s ease;
+}
+
+.backBtn:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.closeBtn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #64748b;
+  transition: all 0.15s ease;
+}
+
+.closeBtn:hover {
+  background-color: #fee2e2;
+  border-color: #fca5a5;
+  color: #e52320;
+}
+
+.scrollArea {
+  overflow-y: auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 32px;
+}
+
+@media (max-width: 768px) {
+  .scrollArea {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 16px;
+  }
+}
+
+.imageSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.imageContainer {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mainImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.skuTag {
+  font-family: 'JetBrains Mono', monospace, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  background-color: #f1f5f9;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.stockBadge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.inStock {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.onOrder {
+  background-color: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.3;
+  margin-bottom: 16px;
+}
+
+.priceCard {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.priceLabel {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.priceValue {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: #e52320;
+}
+
+.vatNotice {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quantityPicker {
+  display: inline-flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 44px;
+}
+
+.pickerBtn {
+  width: 40px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  transition: background-color 0.15s ease;
+}
+
+.pickerBtn:hover {
+  background-color: #f1f5f9;
+}
+
+.pickerValue {
+  min-width: 36px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.addToCartBtn {
+  flex-grow: 1;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #e52320;
+  color: #ffffff;
+  padding: 0 24px;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.addToCartBtn:hover {
+  background-color: #c81e1b;
+}
+
+.addToCartBtn:active {
+  transform: scale(0.99);
+}
+
+.inCartState {
+  background-color: #0f172a;
+}
+
+.inCartState:hover {
+  background-color: #1e293b;
+}
+
+.specsSection {
+  margin-top: 20px;
+}
+
+.specsHeading {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 12px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 6px;
+}
+
+.specsTable {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.specRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  background-color: #f8fafc;
+}
+
+.specRow:nth-child(even) {
+  background-color: #ffffff;
+}
+
+.specKey {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.specVal {
+  color: #0f172a;
+  font-weight: 600;
+  text-align: right;
+}
+
+.b2bPerks {
+  margin-top: 20px;
+  padding: 14px;
+  background-color: #f1f5f9;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.perkItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.perkDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #e52320;
+}

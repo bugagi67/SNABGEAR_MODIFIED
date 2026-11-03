@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90">
+  <rect width="90" height="90" rx="18" fill="#0F172A"/>
+  <path d="M 42.5 10 L 47.5 10 L 48.5 18.5 L 53.5 20.5 L 60 14.5 L 63.5 18 L 59.5 25 L 63 29 L 71 26.5 L 73 31.5 L 66 36 L 67.5 41 L 76 42 L 76 48 L 67.5 49 L 66 54 L 73 58.5 L 71 63.5 L 63 61 L 59.5 65 L 63.5 72 L 60 75.5 L 53.5 69.5 L 48.5 71.5 L 47.5 80 L 42.5 80 L 41.5 71.5 L 36.5 69.5 L 30 75.5 L 26.5 72 L 30.5 65 L 27 61 L 19 63.5 L 17 58.5 L 24 54 L 22.5 49 L 14 48 L 14 42 L 22.5 41 L 24 36 L 17 31.5 L 19 26.5 L 27 29 L 30.5 25 L 26.5 18 L 30 14.5 L 36.5 20.5 L 41.5 18.5 Z" fill="#E52320"/>
+  <circle cx="45" cy="45" r="23" fill="#0F172A"/>
+  <circle cx="45" cy="45" r="20" fill="none" stroke="#E52320" stroke-width="2.5"/>
+  <text x="45" y="52" font-family="'Montserrat', -apple-system, sans-serif" font-weight="900" font-size="20" fill="#FFFFFF" text-anchor="middle">SG</text>
+</svg>

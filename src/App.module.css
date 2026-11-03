@@ -1,0 +1,116 @@
+.appContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg-page);
+  color: var(--color-dark);
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.mainContent {
+  flex: 1;
+  width: 100%;
+}
+
+/* Floating Quick Quote CTA button for quick access while scrolling */
+.floatingCta {
+  position: fixed;
+  bottom: calc(20px + var(--safe-bottom));
+  right: max(20px, env(safe-area-inset-right));
+  background-color: var(--color-cta-red);
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(211, 47, 47, 0.4);
+  z-index: 90;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid #ffffff;
+  text-decoration: none;
+  min-height: 44px;
+}
+
+@media (hover: hover) {
+  .floatingCta:hover {
+    background-color: var(--color-cta-red-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(211, 47, 47, 0.5);
+  }
+}
+
+.floatingCta:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+  .floatingCta {
+    bottom: calc(14px + var(--safe-bottom));
+    right: max(14px, env(safe-area-inset-right));
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .floatingCta {
+    padding: 8px 12px;
+    font-size: 11px;
+    gap: 6px;
+  }
+}
+
+.floatingCart {
+  position: fixed;
+  bottom: calc(20px + var(--safe-bottom));
+  left: max(20px, env(safe-area-inset-left));
+  background-color: #0f172a;
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35);
+  z-index: 90;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid #334155;
+  min-height: 44px;
+}
+
+@media (hover: hover) {
+  .floatingCart:hover {
+    background-color: #1e293b;
+    border-color: #e52320;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.5);
+  }
+}
+
+.floatingCartBadge {
+  background-color: #e52320;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+@media (max-width: 600px) {
+  .floatingCart {
+    bottom: calc(14px + var(--safe-bottom));
+    left: max(14px, env(safe-area-inset-left));
+    padding: 9px 14px;
+    font-size: 12px;
+  }
+}
+

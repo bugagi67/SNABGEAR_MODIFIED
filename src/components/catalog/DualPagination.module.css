@@ -1,0 +1,109 @@
+.paginationContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.countInfo {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.countHighlight {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.loadMoreBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #0f172a;
+  color: #ffffff;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.loadMoreBtn:hover {
+  background-color: #1e293b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+}
+
+.loadMoreBtn:active {
+  transform: translateY(0);
+}
+
+.pagesList {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pageBtn {
+  min-width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.pageBtn:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.activePage {
+  background-color: #e52320;
+  border-color: #e52320;
+  color: #ffffff;
+}
+
+.activePage:hover {
+  background-color: #c81e1b;
+  border-color: #c81e1b;
+}
+
+.navBtn {
+  padding: 0 12px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.navBtn:hover:not(:disabled) {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.navBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

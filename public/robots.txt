@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+User-agent: Yandex
+Allow: /
+Clean-param: ref /
+Clean-param: source /
+
+User-agent: Googlebot
+Allow: /
+
+Host: https://snabgear.ru
+Sitemap: https://snabgear.ru/sitemap.xml

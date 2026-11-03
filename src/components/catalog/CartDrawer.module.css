@@ -1,0 +1,424 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1100;
+  display: flex;
+  justify-content: flex-end;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.drawer {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 520px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -8px 0 30px rgba(15, 23, 42, 0.2);
+  animation: slideInRight 0.25s ease-out;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f8fafc;
+}
+
+.headerTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerBadge {
+  font-size: 12px;
+  font-weight: 700;
+  background-color: #e52320;
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.closeBtn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #64748b;
+  transition: all 0.15s ease;
+}
+
+.closeBtn:hover {
+  background-color: #fee2e2;
+  border-color: #fca5a5;
+  color: #e52320;
+}
+
+.body {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.emptyState {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  color: #64748b;
+}
+
+.emptyIcon {
+  width: 64px;
+  height: 64px;
+  background-color: #f1f5f9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  color: #94a3b8;
+}
+
+.emptyTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.emptyText {
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 320px;
+  margin-bottom: 24px;
+}
+
+.returnBtn {
+  background-color: #e52320;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background-color 0.15s ease;
+}
+
+.returnBtn:hover {
+  background-color: #c81e1b;
+}
+
+.itemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.itemCard {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  align-items: center;
+}
+
+.itemImageWrap {
+  width: 60px;
+  height: 60px;
+  background-color: #ffffff;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.itemImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.itemDetails {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.itemSku {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #888888;
+}
+
+.itemTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
+.itemPrice {
+  font-size: 12px;
+  color: #334155;
+  font-weight: 600;
+}
+
+.itemActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.itemControls {
+  display: inline-flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  height: 28px;
+}
+
+.itemQtyBtn {
+  width: 26px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f172a;
+}
+
+.itemQtyBtn:hover {
+  background-color: #f1f5f9;
+}
+
+.itemQtyVal {
+  min-width: 22px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.itemRemoveBtn {
+  color: #94a3b8;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.15s ease;
+}
+
+.itemRemoveBtn:hover {
+  color: #e52320;
+}
+
+.orderSection {
+  border-top: 2px dashed #e2e8f0;
+  padding-top: 20px;
+}
+
+.summaryBox {
+  background-color: #0f172a;
+  color: #ffffff;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+.summaryTotalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 1px solid #334155;
+  padding-top: 10px;
+  margin-top: 6px;
+}
+
+.totalLabel {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.totalPrice {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: #e52320;
+}
+
+.formSectionTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.formLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.formInput {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 13px;
+  background-color: #ffffff;
+  color: #0f172a;
+  transition: border-color 0.15s ease;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #e52320;
+  box-shadow: 0 0 0 3px rgba(229, 35, 32, 0.1);
+}
+
+.formTextarea {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 13px;
+  background-color: #ffffff;
+  color: #0f172a;
+  min-height: 60px;
+  resize: vertical;
+}
+
+.formTextarea:focus {
+  outline: none;
+  border-color: #e52320;
+  box-shadow: 0 0 0 3px rgba(229, 35, 32, 0.1);
+}
+
+.submitBtn {
+  margin-top: 8px;
+  height: 46px;
+  background-color: #e52320;
+  color: #ffffff;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background-color: #c81e1b;
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.privacyNotice {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.4;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.successCard {
+  padding: 30px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.successIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #ecfdf5;
+  color: #059669;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.successTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.successText {
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.5;
+  max-width: 380px;
+}
