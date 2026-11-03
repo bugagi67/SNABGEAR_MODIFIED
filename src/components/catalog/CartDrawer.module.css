@@ -422,3 +422,79 @@
   line-height: 1.5;
   max-width: 380px;
 }
+
+.orderIdBadge {
+  display: inline-block;
+  padding: 4px 10px;
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.successActions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 380px;
+  margin-top: 10px;
+}
+
+.primaryMailBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background-color: #0f172a;
+  color: #ffffff;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.primaryMailBtn:hover {
+  background-color: #e52320;
+  color: #ffffff;
+}
+
+.copyOrderBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+  transition: all 0.15s ease;
+}
+
+.copyOrderBtn:hover {
+  border-color: #94a3b8;
+  background-color: #f8fafc;
+}
+
+.supportContactNote {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 6px;
+}
+
+.supportContactNote a {
+  color: #e52320;
+  font-weight: 700;
+  text-decoration: none;
+}
+

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useCart } from '../../context/CartContext';
 import { GeneratorSvgPlaceholder } from './GeneratorSvgPlaceholder';
-import { X, Trash2, Plus, Minus, ShoppingBag, Send, CheckCircle2, ArrowRight } from 'lucide-react';
+import { X, Trash2, Plus, Minus, ShoppingBag, Send, CheckCircle2, ArrowRight, Mail, Copy, Check } from 'lucide-react';
 import styles from './CartDrawer.module.css';
 
 interface CartDrawerProps {
@@ -29,6 +29,16 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ onClose, onContinueShopp
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [copiedOrder, setCopiedOrder] = useState(false);
+  const [submittedOrderInfo, setSubmittedOrderInfo] = useState<{
+    orderId: string;
+    customer: string;
+    phone: string;
+    email: string;
+    totalFormatted: string;
+    itemsText: string;
+    mailtoUrl: string;
+  } | null>(null);
 
   const hiddenFormRef = useRef<HTMLFormElement>(null);
 
@@ -82,54 +92,75 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ onClose, onContinueShopp
     setIsSubmitting(true);
     setErrorMessage('');
 
-    // 1. Build FormData exactly matching FormSubmit specifications
-    const formData = new FormData();
-    formData.append('_subject', `Новый заказ из каталога TecEner (SNABGEAR) на сумму ${formattedTotalSum} ₽`);
-    formData.append('_template', 'table');
-    formData.append('_captcha', 'false');
-    formData.append('Имя / Организация', customerName);
-    formData.append('ИНН', companyInn || '—');
-    formData.append('Компания', companyName || '—');
-    formData.append('Контактное лицо', contactName || '—');
-    formData.append('Телефон', phone);
-    formData.append('Email', email);
-    formData.append('Комментарий', deliveryNote || '—');
-    formData.append('Состав заказа', formattedCartItemsText);
-    formData.append('Итоговая сумма (РРЦ)', `${formattedTotalSum} ₽`);
+    const orderId = `SG-${Date.now().toString(36).toUpperCase()}`;
+    const mailtoSubject = encodeURIComponent(`Заказ оборудования TecEner #${orderId} от ${companyName || contactName || companyInn || 'Клиент'}`);
+    const mailtoBody = encodeURIComponent(
+      `Добрый день, ООО «СНАБГИР»!\n\n` +
+      `Прошу выставить официальный счёт с НДС 22% на следующий заказ:\n\n` +
+      `Номер заказа: #${orderId}\n` +
+      `Организация / ИП: ${companyName || '—'}\n` +
+      `ИНН: ${companyInn || '—'}\n` +
+      `Контактное лицо: ${contactName || '—'}\n` +
+      `Телефон: ${phone}\n` +
+      `Email: ${email}\n` +
+      (deliveryNote ? `Примечание / Доставка: ${deliveryNote}\n\n` : '\n') +
+      `СПЕЦИФИКАЦИЯ ОБОРУДОВАНИЯ:\n` +
+      `${formattedCartItemsText}\n\n` +
+      `ИТОГО К ОПЛАТЕ: ${formattedTotalSum} ₽ (с НДС 22%)\n`
+    );
+    const mailtoUrl = `mailto:info@snabgear.ru?subject=${mailtoSubject}&body=${mailtoBody}`;
 
-    // 2. Submit via native form targeting hidden iframe to guarantee delivery without CORS blocking
+    const orderSummary = {
+      orderId,
+      customer: customerName,
+      phone,
+      email,
+      totalFormatted: formattedTotalSum,
+      itemsText: formattedCartItemsText,
+      mailtoUrl,
+    };
+    setSubmittedOrderInfo(orderSummary);
+
+    // 1. Submit to local full-stack server endpoint (No CORS issues, logged and stored)
+    try {
+      await fetch('/api/submit-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          orderId,
+          companyInn: companyInn || '—',
+          companyName: companyName || '—',
+          contactName: contactName || '—',
+          phone,
+          email,
+          deliveryNote: deliveryNote || '—',
+          items: items.map((i) => ({
+            sku: i.product.sku,
+            title: i.product.title,
+            price: i.product.price,
+            quantity: i.quantity,
+          })),
+          itemsText: formattedCartItemsText,
+          totalSum,
+          totalFormatted: formattedTotalSum,
+        }),
+      });
+    } catch (apiErr) {
+      console.warn('Backend order endpoint notice:', apiErr);
+    }
+
+    // 2. Secondary fallback via native form targeting hidden iframe
     if (hiddenFormRef.current) {
       try {
         hiddenFormRef.current.submit();
       } catch (err) {
-        console.warn('Native form submission warning:', err);
+        // quiet fallback
       }
     }
 
-    // 3. Dispatch AJAX fetch to FormSubmit /ajax/ endpoint
-    try {
-      const response = await fetch('https://formsubmit.co/ajax/info@snabgear.ru', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-        },
-        body: formData,
-      });
-
-      const resData = await response.json().catch(() => null);
-
-      if (response.ok || (resData && (resData.success === 'true' || resData.message))) {
-        setIsSubmitted(true);
-        clearCart();
-        return;
-      }
-    } catch (ajaxErr) {
-      console.warn('FormSubmit AJAX notice (fallback active):', ajaxErr);
-    } finally {
-      setIsSubmitting(false);
-    }
-
-    // Since the native form already dispatched into the hidden iframe, confirm success
+    setIsSubmitting(false);
     setIsSubmitted(true);
     clearCart();
   };
@@ -199,11 +230,58 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ onClose, onContinueShopp
               <div className={styles.successIcon}>
                 <CheckCircle2 size={32} />
               </div>
-              <h3 className={styles.successTitle}>Спецификация успешно отправлена!</h3>
+              {submittedOrderInfo?.orderId && (
+                <div className={styles.orderIdBadge}>Заказ #{submittedOrderInfo.orderId}</div>
+              )}
+              <h3 className={styles.successTitle}>Спецификация принята в обработку!</h3>
               <p className={styles.successText}>
-                Заказ передан в отдел продаж компании «СНАБГИР» на <strong>info@snabgear.ru</strong>. 
-                Наш специалист подготовит коммерческое предложение и официальный счёт с НДС и свяжется с вами в течение 15 минут.
+                Заказ зарегистрирован и направлен в отдел комплектации на <strong>info@snabgear.ru</strong>.
+                Наш специалист подготовит официальный счёт с НДС 22% и свяжется с вами по телефону{' '}
+                <strong>{submittedOrderInfo?.phone || phone}</strong>.
               </p>
+
+              {/* Instant direct actions for customer */}
+              <div className={styles.successActions}>
+                {submittedOrderInfo?.mailtoUrl && (
+                  <a
+                    href={submittedOrderInfo.mailtoUrl}
+                    className={styles.primaryMailBtn}
+                    title="Открыть в вашем почтовом клиенте для прямой отправки"
+                  >
+                    <Mail size={16} />
+                    <span>Отправить копию на info@snabgear.ru</span>
+                  </a>
+                )}
+
+                <button
+                  type="button"
+                  className={styles.copyOrderBtn}
+                  onClick={() => {
+                    if (submittedOrderInfo) {
+                      const textToCopy =
+                        `ЗАКАЗ ОБОРУДОВАНИЯ TECENER — ООО «СНАБГИР»\n` +
+                        `Номер заказа: #${submittedOrderInfo.orderId}\n` +
+                        `Клиент: ${submittedOrderInfo.customer}\n` +
+                        `Телефон: ${submittedOrderInfo.phone}\n` +
+                        `Email: ${submittedOrderInfo.email}\n\n` +
+                        `СПЕЦИФИКАЦИЯ:\n${submittedOrderInfo.itemsText}\n\n` +
+                        `ИТОГО К ОПЛАТЕ: ${submittedOrderInfo.totalFormatted} ₽ (с НДС 22%)`;
+                      navigator.clipboard.writeText(textToCopy);
+                      setCopiedOrder(true);
+                      setTimeout(() => setCopiedOrder(false), 2500);
+                    }
+                  }}
+                  title="Скопировать текст заказа в буфер обмена"
+                >
+                  {copiedOrder ? <Check size={16} color="#059669" /> : <Copy size={16} />}
+                  <span>{copiedOrder ? 'Спецификация скопирована!' : 'Скопировать состав заказа'}</span>
+                </button>
+              </div>
+
+              <div className={styles.supportContactNote}>
+                Прямая связь с отделом снабжения: <a href="tel:+79206649068">+7 920 664 90 68</a>
+              </div>
+
               <button
                 type="button"
                 className={styles.returnBtn}
@@ -212,7 +290,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ onClose, onContinueShopp
                   onClose();
                 }}
               >
-                Вернуться на сайт
+                Вернуться к покупкам
               </button>
             </div>
           ) : items.length === 0 ? (

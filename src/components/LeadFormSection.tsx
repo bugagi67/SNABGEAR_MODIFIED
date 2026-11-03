@@ -59,23 +59,6 @@ export const LeadFormSection: React.FC<LeadFormSectionProps> = ({
     fileDataUrl?: string;
   } | null>(null);
 
-  // Check if target email requires one-time FormSubmit activation
-  useEffect(() => {
-    fetch(`https://formsubmit.co/ajax/${COMPANY_INFO.targetEmail}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ _ping: '1' }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.message && data.message.toLowerCase().includes('activation')) {
-          setNeedsActivation(true);
-        } else if (data?.success === 'true') {
-          setNeedsActivation(false);
-        }
-      })
-      .catch(() => {});
-  }, []);
 
   // If a user clicked "Запросить КП" on a category card, prefill the comment
   useEffect(() => {
@@ -225,19 +208,23 @@ export const LeadFormSection: React.FC<LeadFormSectionProps> = ({
         formRef.current.submit();
       }
 
-      // 2. Also send as FormData via AJAX endpoint to inspect response status
-      if (formRef.current) {
-        const ajaxFormData = new FormData(formRef.current);
-        const res = await fetch(`https://formsubmit.co/ajax/${COMPANY_INFO.targetEmail}`, {
+      // 2. Submit lead to local full-stack API endpoint (no CORS, logged and saved)
+      try {
+        await fetch('/api/submit-lead', {
           method: 'POST',
-          body: ajaxFormData,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            organization: companyOrInn,
+            contactPerson: contactPerson,
+            phone: phone,
+            email: email,
+            comment: comment,
+            fileName: attachedFile?.name,
+            fileSize: attachedFile?.sizeFormatted,
+          }),
         });
-        const resData = await res.json().catch(() => null);
-        if (resData?.message && resData.message.toLowerCase().includes('activation')) {
-          activationDetected = true;
-        } else if (resData?.success === 'true') {
-          activationDetected = false;
-        }
+      } catch (apiErr) {
+        console.warn('Local lead endpoint notice:', apiErr);
       }
     } catch (err) {
       console.warn('Form submission dispatch fallback:', err);
