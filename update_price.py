@@ -126,8 +126,8 @@ class PriceUpdaterGUI(tk.Tk):
         log_label.pack(fill=tk.X, pady=(6, 2))
 
         # Scrollable Console Area
-        console_frame = tk.Frame(self, bg=self.bg_color, padx=16, pady=(0, 12))
-        console_frame.pack(fill=tk.BOTH, expand=True)
+        console_frame = tk.Frame(self, bg=self.bg_color)
+        console_frame.pack(fill=tk.BOTH, expand=True, padx=16, pady=(0, 12))
 
         self.log_area = scrolledtext.ScrolledText(
             console_frame,
