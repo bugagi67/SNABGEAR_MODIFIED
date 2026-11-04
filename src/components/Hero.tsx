@@ -1,14 +1,19 @@
 import React from 'react';
 import styles from './Hero.module.css';
 import { COMPANY_INFO } from '../data/categories';
-import { FileUp, ArrowDown, ShieldCheck, Percent, Clock, CalendarClock } from 'lucide-react';
+import { FileUp, ArrowDown, Zap } from 'lucide-react';
 
 interface HeroProps {
   onScrollToForm: () => void;
   onScrollToCatalog: () => void;
+  onOpenCatalog?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onScrollToForm, onScrollToCatalog }) => {
+export const Hero: React.FC<HeroProps> = ({
+  onScrollToForm,
+  onScrollToCatalog,
+  onOpenCatalog,
+}) => {
   return (
     <section className={styles.heroSection}>
       <div className={styles.heroBackdrop} />
@@ -32,7 +37,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToForm, onScrollToCatalog })
             Поставка промышленного оборудования, профессионального инструмента, оснастки и расходных материалов в Смоленске и Смоленской области для юридических лиц.
           </p>
 
-          {/* Big Red Button + Secondary Action */}
+          {/* Big Red Button + TecEner Catalog Button + Secondary Action */}
           <div className={styles.actionsRow}>
             <button
               type="button"
@@ -42,6 +47,23 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToForm, onScrollToCatalog })
               <FileUp size={22} />
               <span>Загрузить спецификацию для расчета</span>
             </button>
+
+            <a
+              href="?catalog=tecener"
+              className={styles.tecEnerBtn}
+              onClick={(e) => {
+                e.preventDefault();
+                if (onOpenCatalog) {
+                  onOpenCatalog();
+                } else {
+                  window.location.search = '?catalog=tecener';
+                }
+              }}
+              aria-label="Перейти в официальный каталог оборудования и генераторов TecEner"
+            >
+              <Zap size={18} className={styles.tecEnerZapIcon} />
+              <span>КАТАЛОГ TecEner</span>
+            </a>
 
             <button
               type="button"

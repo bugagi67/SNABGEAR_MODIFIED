@@ -13,7 +13,7 @@
 .headerRow {
   text-align: center;
   max-width: 800px;
-  margin: 0 auto 48px;
+  margin: 0 auto 36px;
 }
 
 .eyebrow {
@@ -42,48 +42,148 @@
   line-height: 1.6;
 }
 
+/* Controls Toolbar */
+.controlsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.controlsInfo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-dark-sub);
+}
+
+.controlsIcon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.controlsButtons {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.controlBtn {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-dark);
+  background-color: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.controlBtn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+}
+
+/* 13 Categories Grid */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  gap: 18px;
+  align-items: start;
 }
 
 .card {
   background-color: var(--color-bg-white);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 24px 22px;
   box-shadow: var(--shadow-subtle);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.cardActiveAccent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: var(--color-primary);
+}
+
+.cardNumber {
+  position: absolute;
+  top: 14px;
+  right: 48px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #c0c6d4;
+  font-family: var(--font-mono);
+  pointer-events: none;
+}
+
+/* Collapsed Tab State */
+.cardCollapsed {
+  padding: 14px 16px;
 }
 
 @media (hover: hover) {
-  .card:hover {
-    transform: translateY(-3px);
+  .cardCollapsed:hover {
+    transform: translateY(-2px);
     box-shadow: var(--shadow-card-hover);
     border-color: var(--color-primary);
   }
 
-  .card:hover .iconWrapper {
+  .cardCollapsed:hover .iconWrapper {
     background-color: var(--color-primary);
     color: #ffffff;
   }
+
+  .cardCollapsed:hover .chevronWrapper {
+    border-color: var(--color-primary-border);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
 }
 
-.cardTop {
+/* Open Tab State */
+.cardOpen {
+  padding: 20px 18px;
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 18px rgba(229, 35, 32, 0.08);
+}
+
+.cardOpen .iconWrapper {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+/* Clickable Tab Trigger Header */
+.tabTrigger {
+  width: 100%;
   display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  margin-bottom: 12px;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  position: relative;
 }
 
 .iconWrapper {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   background-color: var(--color-primary-light);
   color: var(--color-primary);
   border-radius: var(--radius-sm);
@@ -91,40 +191,88 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.cardNumber {
-  position: absolute;
-  top: 16px;
-  right: 18px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #c0c6d4;
-  font-family: var(--font-mono);
+.titleWrapper {
+  flex-grow: 1;
+  min-width: 0;
+  padding-right: 28px;
 }
 
 .cardTitle {
-  font-size: 17px;
+  font-family: var(--font-heading);
+  font-size: 15px;
   font-weight: 800;
   color: var(--color-dark);
   line-height: 1.3;
-  margin-bottom: 4px;
-  padding-right: 28px;
+  margin-bottom: 2px;
+}
+
+.tabActionText {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-dark-light);
+  display: block;
+  transition: color 0.15s ease;
+}
+
+.cardOpen .tabActionText {
+  color: var(--color-primary);
+}
+
+.chevronWrapper {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--color-bg-page);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-dark-sub);
+  flex-shrink: 0;
+  transition: transform 0.25s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+}
+
+/* Expanded Content Body */
+.cardBody {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border);
+  animation: tabFadeIn 0.2s ease-out;
+}
+
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .cardDesc {
   font-size: 13.5px;
   color: var(--color-dark-sub);
-  line-height: 1.5;
-  margin-bottom: 14px;
+  line-height: 1.55;
+  margin-bottom: 12px;
 }
 
 .examplesList {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .exampleTag {
@@ -139,54 +287,36 @@
   word-break: break-word;
 }
 
+/* Footer (NO "В наличии" status) */
 .cardFooter {
-  border-top: 1px solid var(--color-border);
+  border-top: 1px dashed var(--color-border);
   padding-top: 12px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.stockStatus {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-success);
-  white-space: nowrap;
-}
-
-.statusDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: var(--color-success);
-  flex-shrink: 0;
+  justify-content: flex-end;
 }
 
 .requestBtn {
   font-size: 12px;
   font-weight: 700;
-  color: var(--color-primary);
+  color: #ffffff;
+  background-color: #ea1111;
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  transition: color 0.2s;
+  gap: 6px;
+  transition: background-color 0.15s ease, transform 0.1s ease;
   cursor: pointer;
-  background: none;
   border: none;
-  padding: 6px 0;
-  min-height: 36px;
   white-space: nowrap;
 }
 
 .requestBtn:hover {
-  color: var(--color-primary-hover);
-  text-decoration: underline;
+  background-color: #c81e1b;
 }
 
+/* Bottom Banner */
 .bottomBanner {
   margin-top: 48px;
   background-color: var(--color-dark);
@@ -256,16 +386,51 @@
   }
 
   .headerRow {
-    margin-bottom: 32px;
+    margin-bottom: 24px;
+  }
+
+  .controlsRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .controlsButtons {
+    width: 100%;
+  }
+
+  .controlBtn {
+    flex: 1;
+    text-align: center;
+    padding: 8px 10px;
   }
 
   .grid {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 12px;
   }
 
-  .card {
-    padding: 20px 16px;
+  .cardCollapsed {
+    padding: 12px 14px;
+  }
+
+  .cardOpen {
+    padding: 16px 14px;
+  }
+
+  .iconWrapper {
+    width: 38px;
+    height: 38px;
+  }
+
+  .cardTitle {
+    font-size: 14px;
+  }
+
+  .cardNumber {
+    right: 42px;
+    top: 12px;
   }
 
   .bottomBanner {

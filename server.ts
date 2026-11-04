@@ -35,13 +35,7 @@ async function startServer() {
         ...order,
       };
 
-      console.log('====================================================');
-      console.log(`[SNABGEAR ORDER] Заказ #${orderId} на info@snabgear.ru`);
-      console.log('Клиент:', order.companyName, '| ИНН:', order.companyInn, '| Контакт:', order.contactName);
-      console.log('Телефон:', order.phone, '| Email:', order.email);
-      console.log('Итоговая сумма:', order.totalSum, 'руб.');
-      console.log('Состав заказа:', order.itemsText || '—');
-      console.log('====================================================');
+      console.log(`[SNABGEAR] Order processed: #${orderId}`);
 
       // Persist order to local orders_log.json
       try {
@@ -116,13 +110,7 @@ async function startServer() {
         fileSize: lead.fileSize || null,
       };
 
-      console.log('====================================================');
-      console.log(`[SNABGEAR LEAD] Заявка #${leadId} на info@snabgear.ru`);
-      console.log('Организация/ИНН:', leadRecord.organization);
-      console.log('Контакт:', leadRecord.contactPerson, '| Тел:', leadRecord.phone, '| Email:', leadRecord.email);
-      console.log('Комментарий:', leadRecord.message);
-      if (leadRecord.fileName) console.log('Файл:', leadRecord.fileName, leadRecord.fileSize);
-      console.log('====================================================');
+      console.log(`[SNABGEAR] Lead processed: #${leadId}`);
 
       // Persist to leads_log.json
       try {

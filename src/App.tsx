@@ -159,6 +159,7 @@ function AppContent() {
         <Hero
           onScrollToForm={scrollToForm}
           onScrollToCatalog={scrollToCatalog}
+          onOpenCatalog={() => handleOpenCatalog()}
         />
 
         {/* 3. О компании */}

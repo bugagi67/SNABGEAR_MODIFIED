@@ -143,6 +143,50 @@
   border-color: rgba(255, 255, 255, 0.4);
 }
 
+.tecEnerBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border: 1.5px solid #e52320;
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 800;
+  padding: 16px 26px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  min-height: 52px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(229, 35, 32, 0.25);
+}
+
+.tecEnerZapIcon {
+  color: #e52320;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.tecEnerBtn:hover {
+  background: #e52320;
+  border-color: #e52320;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(229, 35, 32, 0.45);
+}
+
+.tecEnerBtn:hover .tecEnerZapIcon {
+  color: #ffffff;
+  transform: scale(1.15);
+}
+
+.tecEnerBtn:active {
+  transform: translateY(0);
+}
+
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -209,7 +253,7 @@
     margin-bottom: 36px;
   }
 
-  .primaryCtaBtn, .secondaryBtn {
+  .primaryCtaBtn, .secondaryBtn, .tecEnerBtn {
     width: 100%;
     font-size: 15px;
     padding: 14px 18px;

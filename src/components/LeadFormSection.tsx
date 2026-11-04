@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './LeadFormSection.module.css';
 import { COMPANY_INFO } from '../data/categories';
+import { sendToGoogleScript } from '../services/mailService';
 import { 
   FileUp, 
   Send, 
@@ -95,8 +96,8 @@ export const LeadFormSection: React.FC<LeadFormSectionProps> = ({
           const dt = new DataTransfer();
           dt.items.add(file);
           fileInputRef.current.files = dt.files;
-        } catch (e) {
-          console.warn('DataTransfer sync notice:', e);
+        } catch {
+          // quiet sync
         }
       }
     };
@@ -136,8 +137,8 @@ export const LeadFormSection: React.FC<LeadFormSectionProps> = ({
       try {
         const dt = new DataTransfer();
         fileInputRef.current.files = dt.files;
-      } catch (e) {
-        console.warn('Could not reset files via DataTransfer:', e);
+      } catch {
+        // quiet reset
       }
     }
   };
@@ -174,41 +175,31 @@ export const LeadFormSection: React.FC<LeadFormSectionProps> = ({
           const dt = new DataTransfer();
           dt.items.add(attachedFile.file);
           fileInputRef.current.files = dt.files;
-        } catch (err) {
-          console.warn('DataTransfer sync warning:', err);
+        } catch {
+          // quiet sync
         }
       }
     }
 
-    // Comprehensive logging
-    console.log('====================================================');
-    console.log('[SNABGEAR Lead Submission] Отправка заявки и файла спецификации:');
-    console.log('Получатель (Email):', COMPANY_INFO.targetEmail);
-    console.log('Тема письма:', emailSubject);
-    console.log('Организация / ИНН:', companyOrInn || 'Не указано');
-    console.log('Контактное лицо:', contactPerson);
-    console.log('Телефон:', phone);
-    console.log('Email:', email || 'Не указан');
-    console.log('Комментарий / ТЗ:', comment || 'Без комментария');
-    if (attachedFile) {
-      console.log('Прикрепленный файл спецификации:', attachedFile.name, `(${attachedFile.sizeFormatted})`);
-      console.log('MIME тип файла:', attachedFile.file.type);
-    } else {
-      console.log('Прикрепленный файл: отсутствует');
-    }
-    console.log('====================================================');
 
     let activationDetected = needsActivation;
 
     try {
-      // 1. Submit native multipart/form-data via formRef into hidden iframe.
-      // FormSubmit requires native multipart/form-data with name="attachment"
-      // to attach the original file byte-for-byte to the recipient email.
-      if (formRef.current) {
-        formRef.current.submit();
-      }
+      // 1. Send directly via Google Apps Script Web App service (supports Base64 file attachments)
+      await sendToGoogleScript({
+        subject: 'Заявка на расчет спецификации — Отдел снабжения СНАБГИР',
+        fields: {
+          'Имя / Организация': companyOrInn || contactPerson,
+          'Контактное лицо': contactPerson,
+          'Телефон': phone,
+          'Email': email || 'Не указан',
+          'Сообщение / Заявка': comment || 'Без комментария',
+          'Регион поставки': COMPANY_INFO.location,
+        },
+        file: attachedFile?.file || (fileInputRef.current?.files?.[0] || null),
+      });
 
-      // 2. Submit lead to local full-stack API endpoint (no CORS, logged and saved)
+      // 2. Local full-stack server logging for persistence if running
       try {
         await fetch('/api/submit-lead', {
           method: 'POST',
@@ -222,17 +213,17 @@ export const LeadFormSection: React.FC<LeadFormSectionProps> = ({
             fileName: attachedFile?.name,
             fileSize: attachedFile?.sizeFormatted,
           }),
-        });
-      } catch (apiErr) {
-        console.warn('Local lead endpoint notice:', apiErr);
+        }).catch(() => {});
+      } catch {
+        // quiet fallback
       }
-    } catch (err) {
-      console.warn('Form submission dispatch fallback:', err);
+    } catch {
+      // Secondary fallback via DOM form submit
+      try {
+        if (formRef.current) formRef.current.submit();
+      } catch {}
     }
 
-    setNeedsActivation(activationDetected);
-    setIsSubmitting(false);
-    setIsSuccess(true);
     setSubmittedDataSummary({
       company: companyOrInn || 'Юридическое лицо',
       contact: contactPerson,
@@ -241,6 +232,18 @@ export const LeadFormSection: React.FC<LeadFormSectionProps> = ({
       fileSize: attachedFile?.sizeFormatted,
       fileDataUrl: attachedFile?.base64,
     });
+
+    // Clear form fields on success
+    setCompanyOrInn('');
+    setContactPerson('');
+    setPhone('');
+    setEmail('');
+    setComment('');
+    handleRemoveFile();
+
+    setNeedsActivation(false);
+    setIsSubmitting(false);
+    setIsSuccess(true);
   };
 
   const handleCopyData = () => {
@@ -324,11 +327,11 @@ export const LeadFormSection: React.FC<LeadFormSectionProps> = ({
               </div>
 
               <h3 className={styles.successTitle}>
-                Заявка сформирована и отправлена!
+                Заявка успешно отправлена!
               </h3>
 
               <p className={styles.successMessage}>
-                Данные заявки и спецификация переданы на адрес <strong>{COMPANY_INFO.targetEmail}</strong>. Мы свяжемся с вами в течение 30 минут для согласования цен и сроков отгрузки.
+                Мы свяжемся с вами в ближайшее время для согласования спецификации, цен и сроков отгрузки. Все данные зафиксированы и переданы в отдел комплектации СНАБГИР на <strong>{COMPANY_INFO.targetEmail}</strong>.
               </p>
 
               {/* Informative banner if target email requires one-time FormSubmit activation */}

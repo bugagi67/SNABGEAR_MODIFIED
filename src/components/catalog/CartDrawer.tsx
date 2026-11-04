@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useCart } from '../../context/CartContext';
 import { GeneratorSvgPlaceholder } from './GeneratorSvgPlaceholder';
 import { X, Trash2, Plus, Minus, ShoppingBag, Send, CheckCircle2, ArrowRight, Mail, Copy, Check } from 'lucide-react';
+import { sendToGoogleScript } from '../../services/mailService';
 import styles from './CartDrawer.module.css';
 
 interface CartDrawerProps {
@@ -121,43 +122,106 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ onClose, onContinueShopp
     };
     setSubmittedOrderInfo(orderSummary);
 
-    // 1. Submit to local full-stack server endpoint (No CORS issues, logged and stored)
-    try {
-      await fetch('/api/submit-order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          orderId,
-          companyInn: companyInn || '—',
-          companyName: companyName || '—',
-          contactName: contactName || '—',
-          phone,
-          email,
-          deliveryNote: deliveryNote || '—',
-          items: items.map((i) => ({
-            sku: i.product.sku,
-            title: i.product.title,
-            price: i.product.price,
-            quantity: i.quantity,
-          })),
-          itemsText: formattedCartItemsText,
-          totalSum,
-          totalFormatted: formattedTotalSum,
-        }),
-      });
-    } catch (apiErr) {
-      console.warn('Backend order endpoint notice:', apiErr);
-    }
+    // 1. Submit via standard hidden DOM form directly to FormSubmit (bypasses CORS restrictions)
+    const handleFormSubmit = (formDataFields: Record<string, string>) => {
+      let iframe = document.getElementById('hidden_cart_submit_iframe') as HTMLIFrameElement;
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.name = 'hidden_cart_submit_iframe';
+        iframe.id = 'hidden_cart_submit_iframe';
+        iframe.style.display = 'none';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = 'none';
+        iframe.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(iframe);
+      }
 
-    // 2. Secondary fallback via native form targeting hidden iframe
-    if (hiddenFormRef.current) {
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'https://formsubmit.co/info@snabgear.ru';
+      form.target = 'hidden_cart_submit_iframe';
+
+      const defaultFields: Record<string, string> = {
+        _subject: `Новый заказ из каталога TecEner (SNABGEAR) на сумму ${formattedTotalSum} ₽`,
+        _template: 'table',
+        _captcha: 'false',
+      };
+
+      const combinedData = { ...defaultFields, ...formDataFields };
+
+      Object.entries(combinedData).forEach(([key, value]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
+    };
+
+    // 1. Submit via Google Apps Script Web App service (supports Google Sheets logging & email dispatch)
+    try {
+      await sendToGoogleScript({
+        subject: 'Новый заказ оборудования TecEner из корзины SNABGEAR',
+        fields: {
+          'Имя / Организация': customerName,
+          'Телефон': phone,
+          'Email': email,
+          'Комментарий': deliveryNote || '—',
+          'Состав заказа': formattedCartItemsText,
+          'Итоговая сумма заказа (РРЦ)': `${formattedTotalSum} ₽`,
+        },
+      });
+
+      // 2. Also log to local full-stack server endpoint for backup persistence if running
       try {
-        hiddenFormRef.current.submit();
-      } catch (err) {
+        await fetch('/api/submit-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            orderId,
+            companyInn: companyInn || '—',
+            companyName: companyName || '—',
+            contactName: contactName || '—',
+            phone,
+            email,
+            deliveryNote: deliveryNote || '—',
+            items: items.map((i) => ({
+              sku: i.product.sku,
+              title: i.product.title,
+              price: i.product.price,
+              quantity: i.quantity,
+            })),
+            itemsText: formattedCartItemsText,
+            totalSum,
+            totalFormatted: formattedTotalSum,
+          }),
+        }).catch(() => {});
+      } catch {
         // quiet fallback
       }
+    } catch {
+      // Secondary fallback via hidden DOM form
+      try {
+        handleFormSubmit({
+          'Номер заказа': orderId,
+          'Имя / Организация': customerName,
+          'ИНН': companyInn || '—',
+          'Компания': companyName || '—',
+          'Контактное лицо': contactName || '—',
+          'Телефон': phone,
+          'Email': email,
+          'Комментарий': deliveryNote || '—',
+          'Состав заказа': formattedCartItemsText,
+          'Итоговая сумма (РРЦ)': `${formattedTotalSum} ₽`,
+        });
+      } catch {}
     }
 
     setIsSubmitting(false);

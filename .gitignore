@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Allow compiled updater executable
+!Обновить_прайс.exe
