@@ -26,7 +26,7 @@
       "Способ запуска: ручной запуск"
     ],
     "price": 25490,
-    "stock": 0,
+    "stock": 70,
     "image": "images/products/1112031.png"
   },
   {
@@ -55,7 +55,7 @@
       "гарантия 3 года"
     ],
     "price": 52990,
-    "stock": 0,
+    "stock": 60,
     "image": "images/products/1112111.png"
   },
   {
@@ -69,7 +69,7 @@
       "гарантия 3 года"
     ],
     "price": 62990,
-    "stock": 0,
+    "stock": 50,
     "image": "images/products/1112061.png"
   },
   {
@@ -126,7 +126,7 @@
       "гарантия 3 года"
     ],
     "price": 32990,
-    "stock": 0,
+    "stock": 30,
     "image": "images/products/1122021.png"
   },
   {
@@ -142,7 +142,7 @@
       "Объем топливного бака (л): 8,5"
     ],
     "price": 38490,
-    "stock": 0,
+    "stock": 50,
     "image": "images/products/1122031.png"
   },
   {
@@ -176,7 +176,7 @@
       "Объем топливного бака (л): 25"
     ],
     "price": 98990,
-    "stock": 0,
+    "stock": 100,
     "image": "images/products/1122071.png"
   },
   {
@@ -185,7 +185,7 @@
     "title": "Инверторный бензиновый генератор TecEner TE 13000Ei",
     "specs": [],
     "price": 167490,
-    "stock": 0,
+    "stock": 20,
     "image": null
   },
   {
@@ -287,7 +287,7 @@
     "title": "Бензиновый генератор TecEner TE 6500EAX",
     "specs": [],
     "price": 68490,
-    "stock": 0,
+    "stock": 30,
     "image": "images/products/1130601.png"
   },
   {
@@ -337,7 +337,7 @@
       "Обмотка альтернатора: медь"
     ],
     "price": 85990,
-    "stock": 0,
+    "stock": 30,
     "image": "images/products/1130801.png"
   },
   {
@@ -485,7 +485,7 @@
     "title": "Блок автоматики для генератора TecEner TE 230-1",
     "specs": [],
     "price": 16990,
-    "stock": 0,
+    "stock": 50,
     "image": null
   },
   {
@@ -494,7 +494,7 @@
     "title": "Блок автоматики для генератора TecEner TE 400-1",
     "specs": [],
     "price": 19490,
-    "stock": 0,
+    "stock": 50,
     "image": null
   },
   {
