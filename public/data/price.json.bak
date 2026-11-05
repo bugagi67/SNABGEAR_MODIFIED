@@ -26,7 +26,7 @@
       "Способ запуска: ручной запуск"
     ],
     "price": 25490,
-    "stock": 10,
+    "stock": 0,
     "image": "/images/products/1112031.png"
   },
   {
@@ -41,7 +41,7 @@
       "Способ запуска: ручной запуск"
     ],
     "price": 36490,
-    "stock": 10,
+    "stock": 0,
     "image": "/images/products/1112041.png"
   },
   {
@@ -55,7 +55,7 @@
       "гарантия 3 года"
     ],
     "price": 52990,
-    "stock": 10,
+    "stock": 0,
     "image": "/images/products/1112111.png"
   },
   {
@@ -69,7 +69,7 @@
       "гарантия 3 года"
     ],
     "price": 62990,
-    "stock": 10,
+    "stock": 0,
     "image": "/images/products/1112061.png"
   },
   {
@@ -83,7 +83,7 @@
       "гарантия 3года"
     ],
     "price": 86990,
-    "stock": 10,
+    "stock": 0,
     "image": "/images/products/1112071.png"
   },
   {
@@ -126,7 +126,7 @@
       "гарантия 3 года"
     ],
     "price": 32990,
-    "stock": 10,
+    "stock": 0,
     "image": "/images/products/1122021.png"
   },
   {
@@ -142,7 +142,7 @@
       "Объем топливного бака (л): 8,5"
     ],
     "price": 38490,
-    "stock": 10,
+    "stock": 0,
     "image": "/images/products/1122031.png"
   },
   {
@@ -176,7 +176,7 @@
       "Объем топливного бака (л): 25"
     ],
     "price": 98990,
-    "stock": 10,
+    "stock": 0,
     "image": "/images/products/1122071.png"
   },
   {
@@ -202,7 +202,7 @@
       "Количество фаз: 1"
     ],
     "price": 156590,
-    "stock": 10,
+    "stock": 15,
     "image": "/images/products/1140601.png"
   },
   {
@@ -242,7 +242,7 @@
       "Обмотка альтернатора: медь"
     ],
     "price": 42990,
-    "stock": 10,
+    "stock": 0,
     "image": "/images/products/1130321.png"
   },
   {
@@ -287,7 +287,7 @@
     "title": "Бензиновый генератор TecEner TE 6500EAX",
     "specs": [],
     "price": 68490,
-    "stock": 10,
+    "stock": 0,
     "image": "/images/products/1130601.png"
   },
   {
@@ -337,7 +337,7 @@
       "Обмотка альтернатора: медь"
     ],
     "price": 85990,
-    "stock": 10,
+    "stock": 0,
     "image": "/images/products/1130801.png"
   },
   {
@@ -385,7 +385,7 @@
       "Обмотка альтернатора: медь"
     ],
     "price": 159990,
-    "stock": 100,
+    "stock": 15,
     "image": "/images/products/1131001.png"
   },
   {
@@ -403,7 +403,7 @@
     "title": "Бензиновый генератор TecEner TE 11000TEAX",
     "specs": [],
     "price": 180990,
-    "stock": 3,
+    "stock": 7,
     "image": null
   },
   {
@@ -462,7 +462,7 @@
       "гарантия 3 года"
     ],
     "price": 98990,
-    "stock": 10,
+    "stock": 15,
     "image": "/images/products/1232021.png"
   },
   {
@@ -485,7 +485,7 @@
     "title": "Блок автоматики для генератора TecEner TE 230-1",
     "specs": [],
     "price": 16990,
-    "stock": 10,
+    "stock": 0,
     "image": null
   },
   {
@@ -494,7 +494,7 @@
     "title": "Блок автоматики для генератора TecEner TE 400-1",
     "specs": [],
     "price": 19490,
-    "stock": 10,
+    "stock": 0,
     "image": null
   },
   {
@@ -503,7 +503,7 @@
     "title": "Кабель для параллельного подключения генераторов TecEner",
     "specs": [],
     "price": 1270,
-    "stock": 10,
+    "stock": 0,
     "image": null
   },
   {
@@ -512,7 +512,7 @@
     "title": "Блок параллельной работы для инверторного генератора S TecEner",
     "specs": [],
     "price": 8050,
-    "stock": 10,
+    "stock": 0,
     "image": null
   },
   {
@@ -521,7 +521,7 @@
     "title": "Блок параллельной работы для инверторного генератора M TecEner",
     "specs": [],
     "price": 10490,
-    "stock": 10,
+    "stock": 0,
     "image": null
   },
   {
@@ -530,7 +530,7 @@
     "title": "Колёса и ручки для генераторов S TecEner",
     "specs": [],
     "price": 4390,
-    "stock": 10,
+    "stock": 0,
     "image": null
   },
   {
@@ -539,7 +539,7 @@
     "title": "Колёса и ручки для генераторов L TecEner",
     "specs": [],
     "price": 5490,
-    "stock": 10,
+    "stock": 0,
     "image": null
   }
 ]
