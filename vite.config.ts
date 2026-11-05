@@ -4,6 +4,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
+    base: '/SNABGEAR_MODIFIED/', // базовый путь для GitHub Pages
     plugins: [react()],
     resolve: {
       alias: {
