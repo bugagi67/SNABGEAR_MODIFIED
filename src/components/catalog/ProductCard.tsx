@@ -72,7 +72,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) =
           <GeneratorSvgPlaceholder />
         ) : (
           <img
-            src={product.image}
+            src={`${import.meta.env.BASE_URL}${product.image.replace(/^\/+/, '')}`}
             alt={product.title}
             className={styles.productImage}
             onError={() => setImageError(true)}

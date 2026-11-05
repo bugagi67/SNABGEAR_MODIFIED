@@ -38,7 +38,8 @@ export const CatalogLayer: React.FC<CatalogLayerProps> = ({
   // Silent daily update from /data/price.json
   useEffect(() => {
     let isMounted = true;
-    fetch(`/data/price.json?t=${Date.now()}`)
+
+    fetch(`${import.meta.env.BASE_URL}data/price.json?t=${Date.now()}`)
       .then((res) => {
         if (!res.ok) throw new Error('Cannot load price.json');
         return res.json();
@@ -49,7 +50,7 @@ export const CatalogLayer: React.FC<CatalogLayerProps> = ({
         }
       })
       .catch(() => {
-        // Fallback already active, silently proceed
+        // FALLBACK_PRODUCTS уже активен, поэтому молча продолжаем
       });
 
     return () => {

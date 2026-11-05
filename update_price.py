@@ -350,7 +350,7 @@ class PriceUpdaterGUI(tk.Tk):
                         clean_stock = int(digits[0]) if digits else 0
 
                 # Проверка наличия изображения на диске
-                img_path = f"/images/products/{sku}.png"
+                img_path = f"images/products/{sku}.png"
                 disk_img = self.images_dir / f"{sku}.png"
                 if not disk_img.exists():
                     img_path = ""
