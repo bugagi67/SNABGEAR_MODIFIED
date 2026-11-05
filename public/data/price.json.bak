@@ -12,7 +12,7 @@
     ],
     "price": 29990,
     "stock": 0,
-    "image": "/images/products/1112011.png"
+    "image": "images/products/1112011.png"
   },
   {
     "id": "1112031",
@@ -27,7 +27,7 @@
     ],
     "price": 25490,
     "stock": 0,
-    "image": "/images/products/1112031.png"
+    "image": "images/products/1112031.png"
   },
   {
     "id": "1112041",
@@ -42,7 +42,7 @@
     ],
     "price": 36490,
     "stock": 0,
-    "image": "/images/products/1112041.png"
+    "image": "images/products/1112041.png"
   },
   {
     "id": "1112111",
@@ -56,7 +56,7 @@
     ],
     "price": 52990,
     "stock": 0,
-    "image": "/images/products/1112111.png"
+    "image": "images/products/1112111.png"
   },
   {
     "id": "1112061",
@@ -70,7 +70,7 @@
     ],
     "price": 62990,
     "stock": 0,
-    "image": "/images/products/1112061.png"
+    "image": "images/products/1112061.png"
   },
   {
     "id": "1112071",
@@ -84,7 +84,7 @@
     ],
     "price": 86990,
     "stock": 0,
-    "image": "/images/products/1112071.png"
+    "image": "images/products/1112071.png"
   },
   {
     "id": "TE-6500EGis",
@@ -113,7 +113,7 @@
     ],
     "price": 186990,
     "stock": 0,
-    "image": "/images/products/1112101.png"
+    "image": "images/products/1112101.png"
   },
   {
     "id": "1122021",
@@ -127,7 +127,7 @@
     ],
     "price": 32990,
     "stock": 0,
-    "image": "/images/products/1122021.png"
+    "image": "images/products/1122021.png"
   },
   {
     "id": "1122031",
@@ -143,7 +143,7 @@
     ],
     "price": 38490,
     "stock": 0,
-    "image": "/images/products/1122031.png"
+    "image": "images/products/1122031.png"
   },
   {
     "id": "1122041",
@@ -177,7 +177,7 @@
     ],
     "price": 98990,
     "stock": 0,
-    "image": "/images/products/1122071.png"
+    "image": "images/products/1122071.png"
   },
   {
     "id": "11220811",
@@ -203,7 +203,7 @@
     ],
     "price": 156590,
     "stock": 15,
-    "image": "/images/products/1140601.png"
+    "image": "images/products/1140601.png"
   },
   {
     "id": "1140801",
@@ -220,7 +220,7 @@
     ],
     "price": 177490,
     "stock": 0,
-    "image": "/images/products/1140801.png"
+    "image": "images/products/1140801.png"
   },
   {
     "id": "1132011",
@@ -243,7 +243,7 @@
     ],
     "price": 42990,
     "stock": 0,
-    "image": "/images/products/1130321.png"
+    "image": "images/products/1130321.png"
   },
   {
     "id": "1130501",
@@ -288,7 +288,7 @@
     "specs": [],
     "price": 68490,
     "stock": 0,
-    "image": "/images/products/1130601.png"
+    "image": "images/products/1130601.png"
   },
   {
     "id": "1132051",
@@ -338,7 +338,7 @@
     ],
     "price": 85990,
     "stock": 0,
-    "image": "/images/products/1130801.png"
+    "image": "images/products/1130801.png"
   },
   {
     "id": "1132071",
@@ -386,7 +386,7 @@
     ],
     "price": 159990,
     "stock": 15,
-    "image": "/images/products/1131001.png"
+    "image": "images/products/1131001.png"
   },
   {
     "id": "1132091",
@@ -463,7 +463,7 @@
     ],
     "price": 98990,
     "stock": 15,
-    "image": "/images/products/1232021.png"
+    "image": "images/products/1232021.png"
   },
   {
     "id": "1222011",
@@ -477,7 +477,7 @@
     ],
     "price": 127990,
     "stock": 0,
-    "image": "/images/products/1222011.png"
+    "image": "images/products/1222011.png"
   },
   {
     "id": "10011",

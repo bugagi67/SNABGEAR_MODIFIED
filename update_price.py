@@ -40,6 +40,51 @@ def get_repo_root() -> Path:
         return script_dir.parent
     return Path.cwd()
 
+def parse_stock(value) -> int:
+    """Преобразует значение из колонки 'Наличие' в количество товара."""
+
+    if value is None:
+        return 0
+
+    # Excel может возвращать числовые значения
+    if isinstance(value, (int, float)):
+        return max(0, int(value))
+
+    text = str(value).strip().lower()
+
+    if not text:
+        return 0
+
+    # Текстовые обозначения отсутствия
+    unavailable_values = {
+        "-",
+        "нет",
+        "под заказ",
+        "отсутствует",
+        "нет в наличии",
+    }
+
+    if text in unavailable_values:
+        return 0
+
+    # Текстовые обозначения наличия без точного количества
+    available_values = {
+        "+",
+        "да",
+        "в наличии",
+        "много",
+    }
+
+    if text in available_values:
+        return 10
+
+    # Извлекаем числовое значение
+    match = re.search(r"\d+(?:[.,]\d+)?", text)
+
+    if match:
+        return max(0, int(float(match.group().replace(",", "."))))
+
+    return 0
 
 class PriceUpdaterGUI(tk.Tk):
     def __init__(self):
@@ -230,7 +275,7 @@ class PriceUpdaterGUI(tk.Tk):
                         if is_purchase:
                             continue
 
-                        if any(k in cell_text for k in ["артикул", "sku"]) and "sku" not in col_map:
+                        if any(k in cell_text for k in ["артикул", "sku", "арт"]) and "sku" not in col_map:
                             col_map["sku"] = col_idx
                         elif "код" in cell_text and "sku" not in col_map:
                             col_map["sku"] = col_idx
@@ -310,7 +355,7 @@ class PriceUpdaterGUI(tk.Tk):
                 sku_raw = sheet.cell(row=r, column=col_map.get("sku", 1)).value
                 title_raw = sheet.cell(row=r, column=col_map.get("title", 2)).value if "title" in col_map else ""
                 price_raw = sheet.cell(row=r, column=col_map["price"]).value
-                stock_raw = sheet.cell(row=r, column=col_map["stock"]).value if "stock" in col_map else 10
+                stock_raw = sheet.cell(row=r, column=col_map["stock"]).value if "stock" in col_map else None
                 specs_raw = sheet.cell(row=r, column=col_map["specs"]).value if "specs" in col_map else None
 
                 if not sku_raw and not title_raw:
@@ -337,17 +382,8 @@ class PriceUpdaterGUI(tk.Tk):
                     except ValueError:
                         clean_price = 0
 
-                # Очистка остатка
-                clean_stock = 0
-                if stock_raw is not None:
-                    s_str = str(stock_raw).strip().lower()
-                    if any(w in s_str for w in ["в наличии", "да", "+", "много"]):
-                        clean_stock = 10
-                    elif any(w in s_str for w in ["под заказ", "нет", "-", "0"]):
-                        clean_stock = 0
-                    else:
-                        digits = re.findall(r"\d+", s_str)
-                        clean_stock = int(digits[0]) if digits else 0
+                # Очистка остатка из колонки "Наличие"
+                clean_stock = parse_stock(stock_raw)
 
                 # Проверка наличия изображения на диске
                 img_path = f"images/products/{sku}.png"
