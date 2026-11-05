@@ -8,4 +8,5 @@ coverage/
 !.env.example
 
 # Allow compiled updater executable
-!Обновить_прайс.exe
+Обновить_прайс.exe/
+Обновить_прайс.spec/
